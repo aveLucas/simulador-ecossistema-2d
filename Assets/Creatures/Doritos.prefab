@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 412818560341109055}
   - component: {fileID: 4789425988043312205}
   - component: {fileID: 6925884159047544942}
+  - component: {fileID: 1607373379742924222}
   - component: {fileID: 6318792261123067853}
   - component: {fileID: 4330371538191730898}
   - component: {fileID: 3341780186289112441}
@@ -104,6 +105,19 @@ MonoBehaviour:
   foodLevel: 0
   isEating: 0
   creatureActions: {fileID: 0}
+--- !u!114 &1607373379742924222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3120579943490302727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1734b2f8c1d492644b5975a6598763f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dira: []
 --- !u!114 &6318792261123067853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,9 +133,16 @@ MonoBehaviour:
   centerPoint: {fileID: 0}
   walkPoint: {x: 0, y: 0, z: 0}
   speed: 0.002
-  radius: 1
-  smellRadius: 10
+  changeRate: 0
+  rotationSpeed: 0
+  walkPointRadius: 0
+  _smellRadius: 0
+  _visionDistance: 0
   _directions: []
+  lookDirection: {x: 0, y: 0, z: 0}
+  smellRadius: 10
+  visionDistance: 0
+  directions: []
   creatureStatus: {fileID: 0}
   foodLayer:
     serializedVersion: 2

@@ -750,6 +750,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1607373379742924222, guid: 902cd47964f9c3b468bb336dfed54709, type: 3}
+      propertyPath: smellRadius
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1607373379742924222, guid: 902cd47964f9c3b468bb336dfed54709, type: 3}
+      propertyPath: visionDistance
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1607373379742924222, guid: 902cd47964f9c3b468bb336dfed54709, type: 3}
+      propertyPath: foodLayer.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 3120579943490302727, guid: 902cd47964f9c3b468bb336dfed54709, type: 3}
       propertyPath: m_Name
       value: Doritos
@@ -763,6 +775,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6318792261123067853, guid: 902cd47964f9c3b468bb336dfed54709, type: 3}
+      propertyPath: speed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6318792261123067853, guid: 902cd47964f9c3b468bb336dfed54709, type: 3}
       propertyPath: changeRate
       value: 5
       objectReference: {fileID: 0}
@@ -772,11 +788,43 @@ PrefabInstance:
       objectReference: {fileID: 635653558}
     - target: {fileID: 6318792261123067853, guid: 902cd47964f9c3b468bb336dfed54709, type: 3}
       propertyPath: smellRadius
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6318792261123067853, guid: 902cd47964f9c3b468bb336dfed54709, type: 3}
+      propertyPath: _smellRadius
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6318792261123067853, guid: 902cd47964f9c3b468bb336dfed54709, type: 3}
+      propertyPath: rotationSpeed
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 6318792261123067853, guid: 902cd47964f9c3b468bb336dfed54709, type: 3}
+      propertyPath: visionDistance
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6318792261123067853, guid: 902cd47964f9c3b468bb336dfed54709, type: 3}
+      propertyPath: _visionDistance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6318792261123067853, guid: 902cd47964f9c3b468bb336dfed54709, type: 3}
+      propertyPath: walkPointRadius
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6318792261123067853, guid: 902cd47964f9c3b468bb336dfed54709, type: 3}
       propertyPath: foodLayer.m_Bits
       value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925884159047544942, guid: 902cd47964f9c3b468bb336dfed54709, type: 3}
+      propertyPath: maxHealth
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925884159047544942, guid: 902cd47964f9c3b468bb336dfed54709, type: 3}
+      propertyPath: hungerLimit
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925884159047544942, guid: 902cd47964f9c3b468bb336dfed54709, type: 3}
+      propertyPath: maxFoodLevel
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

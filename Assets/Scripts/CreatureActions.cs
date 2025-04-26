@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Tracing;
+using System.Linq;
+using TMPro;
 using Unity.Burst.CompilerServices;
+using Unity.Properties;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements.Experimental;
@@ -17,20 +20,28 @@ public class CreatureActions : MonoBehaviour
     //private Vector3 distance;
     [Header("Control Variables")]
     [SerializeField] private float speed;
-    private float minPos = -10f, maxPos = 10f;
-    public float radius;
     [SerializeField] private float changeRate;
-    [SerializeField] private float smellRadius;
-    [SerializeField] private Vector3[] _directions;
+    [SerializeField] private float rotationSpeed;
+    private float minPos = -10f, maxPos = 10f;
+    public float walkPointRadius;
     private bool changingPoint = false;
+    
 
     [Header("References")]
     [SerializeField] private CreatureStatus creatureStatus;
-    [SerializeField] private LayerMask foodLayer;
+    [SerializeField] private HerbivoreSenses herbivoreSenses;
 
+    
+
+    private void Awake()
+    {
+        herbivoreSenses = GetComponent<HerbivoreSenses>();
+        creatureStatus = GetComponent<CreatureStatus>();
+
+    }
     void Start()
     {
-        creatureStatus = GetComponent<CreatureStatus>();
+        
 
         walkPoint = transform.position + new Vector3(Random.Range(minPos, maxPos), Random.Range(minPos, maxPos), 0);
 
@@ -44,11 +55,12 @@ public class CreatureActions : MonoBehaviour
 
     void Update()
     {
+        
         if (!creatureStatus.isEating)
         {
-            if (creatureStatus.foodLevel < 10)
+            if (creatureStatus.foodLevel < creatureStatus.hungerLimit)
             {
-                bool foundFood = LookForFood();
+                bool foundFood = herbivoreSenses.LookForFood();
 
                 if (!foundFood)
                 {
@@ -62,63 +74,28 @@ public class CreatureActions : MonoBehaviour
 
             if (Vector3.Distance(transform.position, walkPoint) < 1 && !changingPoint)
             {
-                StartCoroutine(ChangePoint());
+              StartCoroutine(ChangePoint());
 
             }
         }
     }
 
-    private bool LookForFood()
+    public void Move( Vector3 targetPosition )
     {
-        if (creatureStatus.isEating)
-            return false;
+        
+        transform.position = Vector3.Lerp(transform.position, targetPosition, speed * Time.deltaTime);
 
+        
+        Vector3 direction = targetPosition - transform.position;
+        direction.z = 0; 
+        herbivoreSenses.lookDirection = direction;
 
-
-        Vector3[] directions = {
-            Vector3.right,
-            Vector3.left,
-            Vector3.up,
-            Vector3.down,
-            new Vector3(1, 1, 0),   // cima-direita
-            new Vector3(-1, 1, 0),  // cima-esquerda
-            new Vector3(1, -1, 0),  // baixo-direita
-            new Vector3(-1, -1, 0)  // baixo-esquerda
-        };
-        _directions = directions;
-
-        Transform closestFood = null;
-        float closestDistance = Mathf.Infinity;
-
-        foreach (Vector3 direction in directions)
+        if (direction.sqrMagnitude > 0.001f)
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, smellRadius, foodLayer);
-            if (hit.collider != null)
-            {
-                float distance = Vector3.Distance(transform.position, hit.point);
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    closestFood = hit.transform;
-                }
-
-                Debug.DrawLine(transform.position, hit.point, Color.yellow, 0.5f);
-            }
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+            Quaternion targetRotation = Quaternion.Euler(0, 0, angle);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
-
-        if (closestFood != null)
-        {
-            Move(closestFood.position);
-            return true;
-        }
-
-        return false;
-    }
-    
-
-    public void Move( Vector3 position )
-    {
-        transform.position = Vector3.Lerp(transform.position, position, speed);
     }
 
     public IEnumerator ChangePoint()
@@ -130,30 +107,14 @@ public class CreatureActions : MonoBehaviour
         walkPoint = transform.position + new Vector3(Random.Range(minPos, maxPos), Random.Range(minPos, maxPos), 0);
 
         changingPoint = false;
+        
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(walkPoint, radius);
+        Gizmos.DrawWireSphere(walkPoint, walkPointRadius);
 
-
-        //Gizmos.color = Color.blue;
-        //Gizmos.DrawWireSphere(transform.position, smellRadius);  
-        if(_directions != null)
-        {
-            foreach (Vector3 direction in _directions)
-            {
-                Vector3 target = transform.position + direction.normalized * smellRadius;
-                Gizmos.color = Color.green;
-                Gizmos.DrawRay(transform.position, direction.normalized * smellRadius);
-                Gizmos.DrawSphere(target, 0.1f);
-            }
-        }
-    }
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        Debug.Log("Stay");
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
